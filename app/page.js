@@ -7,6 +7,21 @@ export default function Home() {
   function handleChange(event) {
   setSelectedImage(event.target.files[0]);
 }
+
+  const uploadFile = async () => {
+    const formData = new FormData();
+    formData.append("file", selectedImage);
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/file/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    return await res.json();
+  };
+  
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
@@ -30,7 +45,7 @@ export default function Home() {
             width={400}
           />
         </div>
-        <Button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-full">Upload File</Button>
+        <Button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-full" onClick={uploadFile}>Upload File</Button>
       </div>
     </div>
   )
@@ -39,7 +54,7 @@ export default function Home() {
 
 function Button(props) {
   return (
-    <button className={props.className}>{props.children}</button>
+    <button className={props.className} onClick={props.onClick}>{props.children}</button>
   )
 }
 
